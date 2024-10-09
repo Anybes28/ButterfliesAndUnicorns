@@ -31,12 +31,6 @@ def main():
     resultFile.close()
     print("Complete")
 
-   
-    
-
-
-    
-       
 
 
 if __name__ == "__main__":
