@@ -6,7 +6,7 @@ start () {
     ResultPath='/tmp/dnsmasq.d/domains.lst'
 
     DOMAINS=https://raw.githubusercontent.com/itdoginfo/allow-domains/main/Russia/inside-dnsmasq-nfset.lst
-    UNIQORNS=https://raw.githubusercontent.com/Anybes28/ButterfliesAndUnicorns/main/Unicorns.lst
+    UNIQORNS=https://raw.githubusercontent.com/Anybes28/ButterfliesAndUnicorns/main/Uniqorns.lst
 
     echo 'start uniqorns'
 
