@@ -10,7 +10,6 @@ def main():
     resultFile = open(script_dir + "\\Uniqorns.lst", "r")
     for line in resultFile:
         line=line.strip()
-        print(line)
         resultArray.append(line)
     resultFile.close()
 
