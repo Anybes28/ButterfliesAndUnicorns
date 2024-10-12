@@ -1,79 +1,47 @@
-# #!/bin/sh /etc/rc.common
-
-# START=99
-
-# start () {
-#     ResultPath='/tmp/dnsmasq.d/domains.lst'
-
-   
-#     UNIQORNS=https://raw.githubusercontent.com/Anybes28/ButterfliesAndUnicorns/main/Uniqorns.lst
-
-#     echo 'start uniqorns'
-
-#     count=0
-#     while true; do
-#         if curl -m 3 github.com; then
-#             curl -f $DOMAINS --output $ResultPath
-#             echo "" >> $ResultPath
-#             curl -f $UNIQORNS >> $ResultPath
-
-#             echo "uniqorns complete and exist"
-#             break
-#         else
-#             echo "GitHub is not available. Check the internet availability [$count]"
-#             count=$((count+1))
-#         fi
-#     done
-
-#     if dnsmasq --conf-file=/tmp/dnsmasq.d/domains.lst --test 2>&1 | grep -q "syntax check OK"; then
-  
 #!/bin/sh /etc/rc.common
 
 START=99
 
 script () {
-    dir=/tmp/lst
+    DIR=/tmp/lst
     SUBNET=https://raw.githubusercontent.com/Anybes28/ButterfliesAndUnicorns/main/Subnet.lst
     IP=https://raw.githubusercontent.com/Anybes28/ButterfliesAndUnicorns/main/Ip.lst
     MYDOMAINS=https://raw.githubusercontent.com/Anybes28/ButterfliesAndUnicorns/main/Domains.lst
     DOMAINS=https://raw.githubusercontent.com/itdoginfo/allow-domains/main/Russia/inside-dnsmasq-nfset.lst
 
-    download () {
+    download(){
         count=0
-        while [ ! -f $dir/$1 ]; do
-        if [ $count -gt 10 ]; then
-            echo Exit
-            exit 1
-        else
-            echo "Try $count"
-            curl -f -z $dir/$1 $2 --output $dir/$1
-            count=$((count+1))
-            sleep 5
-        fi
+        while true; do
+            if [ $count -gt 10 ]; then
+                echo "Exit by time out"
+                exit 1
+            fi
+
+            if curl -m 3 github.com; then
+                curl -f $2 --output $1
+                break
+            else
+                echo "GitHub is not available. Check the internet availability [$count]"
+              :  count=$((count+1))
+                sleep 5
+            fi
         done
     }
 
-    mkdir -p $dir
-
-    # Для 22.03 версии, при ошибке `No buffer space available`
-    #echo "Flush sets"
-    #nft flush ruleset
+    mkdir -p $DIR
 
     echo "Run download lists"
-    download subnet.lst $SUBNET
+    download $DIR/subnet.lst $SUBNET
 
-    download ip.lst $IP
+    download $DIR/ip.lst $IP
 
-    download mydomains.lst $MYDOMAINS
-    download domains.lst $DOMAINS
+    download $DIR/mydomains.lst $MYDOMAINS
 
-    DNSMASQ_DOMAINS_DIR=/tmp/dnsmasq.d/domains.lst
-    cp -f $dir/domains.lst  $DNSMASQ_DOMAINS_DIR
-    echo "" >>  $DNSMASQ_DOMAINS_DIR
-    sed "s/.*/nftset=\/&\/4#inet#fw4#vpn_domains/" $dir/mydomains.lst >>  $DNSMASQ_DOMAINS_DIR
+    DNSMASQ_DOMAINS_DIR=/tmp/dnsmasq.d
+    download $DNSMASQ_DOMAINS_DIR/domains.lst $DOMAINS
+    echo "" >>  $DNSMASQ_DOMAINS_DIR/domains.lst
+    sed "s/.*/nftset=\/&\/4#inet#fw4#vpn_domains/" $dir/mydomains.lst >>  $DNSMASQ_DOMAINS_DIR/domains.lst
 
-    if dnsmasq --conf-file=$DNSMASQ_DOMAINS_DIR --test 2>&1 | grep -q "syntax check OK"; then
-    fi
     echo "Dnsmasq restart"
     /etc/init.d/dnsmasq restart
 
