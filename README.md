@@ -21,7 +21,7 @@ config rule
         option family 'ipv4'
 
 config ipset
-        option name 'vpn_subets'
+        option name 'vpn_subnets'
         option match 'dst_net'
         option loadfile '/tmp/lst/subnet.lst'
 
