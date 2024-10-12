@@ -37,7 +37,7 @@ config rule
         option family 'ipv4'
 
 
-2. Owerwrite sctipt /etc/init.d/getdomains with UnicornsUpdater script source code
+2. Overwrite sctipt /etc/init.d/getdomains with UnicornsUpdater script source code
 3. Start command /etc/init.d/network restart
 4. Start command /etc/init.d/getdomains start
 
