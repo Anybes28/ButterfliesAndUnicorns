@@ -4,7 +4,6 @@ START=99
 
 script () {
     DIR=/tmp/lst
-    SUBNET=https://raw.githubusercontent.com/Anybes28/ButterfliesAndUnicorns/main/Subnet.lst
     IP=https://raw.githubusercontent.com/Anybes28/ButterfliesAndUnicorns/main/Ip.lst
     MYDOMAINS=https://raw.githubusercontent.com/Anybes28/ButterfliesAndUnicorns/main/Domains.lst
     DOMAINS=https://raw.githubusercontent.com/itdoginfo/allow-domains/main/Russia/inside-dnsmasq-nfset.lst
@@ -31,7 +30,6 @@ script () {
     mkdir -p $DIR
 
     echo "Run download lists"
-    download $DIR/subnet.lst $SUBNET
 
     download $DIR/ip.lst $IP
 
