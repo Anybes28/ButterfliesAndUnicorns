@@ -38,7 +38,7 @@ script () {
     DNSMASQ_DOMAINS_DIR=/tmp/dnsmasq.d
     download $DNSMASQ_DOMAINS_DIR/domains.lst $DOMAINS
     echo "" >>  $DNSMASQ_DOMAINS_DIR/domains.lst
-    sed "s/.*/nftset=\/&\/4#inet#fw4#vpn_domains/" $dir/mydomains.lst >>  $DNSMASQ_DOMAINS_DIR/domains.lst
+    sed "s/.*/nftset=\/&\/4#inet#fw4#vpn_domains/" $DIR/mydomains.lst >>  $DNSMASQ_DOMAINS_DIR/domains.lst
 
     echo "Dnsmasq restart"
     /etc/init.d/dnsmasq restart
